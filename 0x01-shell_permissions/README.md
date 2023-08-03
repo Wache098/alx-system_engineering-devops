@@ -18,4 +18,9 @@ Other users: all the permissions
 
 -rwxr-x-wx 1 julien julien 23 Sep 20 14:25 hello
 11: a script that sets the mode of the file hello the same as olleh’s mode.
-12: a script that adds execute permission to all subdirectories of the current directory for the owner, the group owner and all other users.
+12: a script that adds execute permission to all subdirectories of the current directory for the owner, the group owner and all other users.\
+13: a script that creates a directory called my_dir with permissions 751 in the working directory.
+14: a script that changes the group owner to school for the file hello
+15:a script that changes the owner to vincent and the group owner to staff for all the files and directories in the working directory.
+16: a script that changes the owner and the group owner of _hello to vincent and staff respectively.
+17: a script that changes the owner of the file hello to betty only if it is owned by the user guillaume.

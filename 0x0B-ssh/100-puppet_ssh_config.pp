@@ -1,11 +1,13 @@
-file_line { 'Declare identity file':
-  path  => '/home/ubuntu/.ssh/config',
+# This Puppet script configures the SSH client to use the private key ~/.ssh/school and refuse password authentication
+
+file_line { 'IdentityFile':
+  path  => '/etc/ssh/ssh_config',
   line  => 'IdentityFile ~/.ssh/school',
-  match => '^IdentityFile',
+  match => '^#?IdentityFile',
 }
 
-file_line { 'Turn off passwd auth':
-  path  => '/home/ubuntu/.ssh/config',
+file_line { 'PasswordAuthentication':
+  path  => '/etc/ssh/ssh_config',
   line  => 'PasswordAuthentication no',
-  match => '^PasswordAuthentication',
+  match => '^#?PasswordAuthentication',
 }

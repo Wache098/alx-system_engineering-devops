@@ -1,0 +1,1 @@
+A server is a computer system or a software application that provides services, resources, or data to other computers, known as clients, over a network. Servers are designed to manage, store, and distribute resources, and they can handle multiple client requests simultaneously. Examples of servers include web servers, database servers, file servers, and application servers.

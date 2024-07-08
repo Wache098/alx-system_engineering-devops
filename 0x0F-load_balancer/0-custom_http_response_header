@@ -1,0 +1,9 @@
+#!/usr/bin/env bash
+# Update package lists and install Nginx
+
+sudo apt update
+sudo apt install -y nginx
+HOSTNAME=$(hostname)
+sudo cp /etc/nginx/nginx.conf /etc/nginx/nginx.conf.backup
+sudo sed -i '/http {/a \    add_header X-Served-By '"$HOSTNAME"';' /etc/nginx/nginx.conf
+sudo systemctl restart nginx

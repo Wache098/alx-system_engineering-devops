@@ -1,0 +1,29 @@
+tom_http_response_header:!/usr/bin/env bash
+# Configures a new Ubuntu machine
+# Update package lists and install Nginx
+
+sudo apt update
+sudo apt install -y nginx
+HOSTNAME=$(hostname)
+sudo cp /etc/nginx/nginx.conf /etc/nginx/nginx.conf.backup
+
+if ! grep -q "X-Served-By" /etc/nginx/nginx.conf; then
+    sudo sed -i '/http {/a \    add_header X-Served-By '"$HOSTNAME"';' /etc/nginx/nginx.conf
+fi
+
+echo "Hello World!" | sudo tee /var/www/html/index.html
+
+if ! grep -q "location /redirect_me" /etc/nginx/sites-available/default; then
+    sudo sed -i '/server_name _;/a \\
+    location /redirect_me {\\
+        return 301 https://www.youtube.com/watch?v=3MbaGJN2ioQ;\\
+    }' /etc/nginx/sites-available/default
+fi
+
+if ! grep -q "error_page 404" /etc/nginx/sites-available/default; then
+    echo "Ceci n'est pas une page" | sudo tee /var/www/html/custom_404.html
+    sudo sed -i '/server_name _;/a \\
+    error_page 404 /custom_404.html;' /etc/nginx/sites-available/default
+fi
+
+sudo systemctl restart nginx

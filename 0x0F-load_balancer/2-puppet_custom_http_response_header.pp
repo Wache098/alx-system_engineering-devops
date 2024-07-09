@@ -1,25 +1,30 @@
-# Ensure Nginx is installed
+# Custom HTTP header in an Nginx server
+
+# Update Ubuntu server
+exec { 'update server':
+  command  => '/usr/bin/apt-get update',
+  user     => 'root',
+  provider => 'shell',
+}
+->
+# Install Nginx web server on the server
 package { 'nginx':
-  ensure => installed,
+  ensure   => present,
+  provider => 'apt',
 }
-
-# Define a file resource to manage the Nginx configuration
-file { '/etc/nginx/sites-available/default':
-  ensure  => file,
-  content => template('nginx/default.conf.erb'),
-  require => Package['nginx'],
-  notify  => Service['nginx'],
+->
+# Custom Nginx response header (X-Served-By: hostname)
+file_line { 'add HTTP header':
+  ensure => 'present',
+  path   => '/etc/nginx/sites-available/default',
+  after  => 'listen 80 default_server;',
+  line   => 'add_header X-Served-By \$hostname;',
 }
-
-# Define the Nginx service
+->
+# Start and enable Nginx service
 service { 'nginx':
-  ensure  => running,
+  ensure  => 'running',
   enable  => true,
+  require => Package['nginx'],
 }
 
-# Define an Exec resource to retrieve the hostname and add custom header
-exec { 'add_custom_http_header':
-  command     => "/bin/bash -c 'HOSTNAME=$(hostname); sed -i \"23i add_header X-Served-By \$HOSTNAME;\" /etc/nginx/sites-available/default'",
-  refreshonly => true,
-  subscribe   => File['/etc/nginx/sites-available/default'],
-}

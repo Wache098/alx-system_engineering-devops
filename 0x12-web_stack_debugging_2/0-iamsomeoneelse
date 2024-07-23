@@ -1,0 +1,10 @@
+#!/usr/bin/env bash
+# This script runs the whoami command under the user passed as an argument
+
+# Check if exactly one argument is passed
+if [ "$#" -ne 1 ]; then
+  echo "Usage: $0 <username>"
+  exit 1
+fi
+
+su -c whoami $1
